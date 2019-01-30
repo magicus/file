@@ -25,3 +25,24 @@
 >0x12	byte		0
 >>0x11	ubyte-0x31	<2      Java HPROF dump,
 >>>0x17	beqdate/1000	x       created %s
+
+# Java jmod module
+# See https://hg.openjdk.java.net/jdk9/jdk9/jdk/file/tip/src/java.base/share/classes/jdk/internal/jmod/JmodFile.java
+0	beshort		0x4a4d		Java jmod module
+# jmod header is followed by zip entry; make sure we win over zip
+!:strength + 20
+>2	byte	>0x00	\b, version %d
+>3	byte	x	\b.%d
+!:mime	application/x-java-jmod
+
+# Java jlinked image
+# See https://hg.openjdk.java.net/jdk9/jdk9/jdk/file/tip/src/java.base/share/native/libjimage/imageFile.hpp
+0	belong	0xcafedada	Java module image (big endian)
+>4	beshort	>0x00	\b, version %d
+>6	beshort	x	\b.%d
+!:mime	application/x-java-image
+
+0	lelong	0xcafedada	Java module image (little endian)
+>6	leshort	>0x00	\b, version %d
+>4	leshort	x	\b.%d
+!:mime	application/x-java-image
